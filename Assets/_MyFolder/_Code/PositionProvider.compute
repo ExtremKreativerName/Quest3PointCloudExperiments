@@ -1,0 +1,27 @@
+#include "Assets/_MyFolder/_Code/DepthKit/DepthKit.hlsl"
+#pragma kernel ProvidePositions
+
+uint side;
+RWStructuredBuffer<float3> _graphicsBufferPoints;
+
+float3 UVtoWorldDepth(float2 UV) //left eye only!!
+{
+    float3 ndc = float3(UV, 1);
+    ndc.z = agDepthSample(ndc.xy, 0);
+	
+    return agDepthNDCtoWorld(ndc, 0);
+}
+
+
+[numthreads(8,8,1)] 
+void ProvidePositions (uint3 id : SV_DispatchThreadID)
+{
+    int gridWidth =side; // dispatch size * thread count per group
+
+    float2 uv = (float2(id.x, id.y) + 0.5) / float2(gridWidth, gridWidth); 
+    
+    float3 worldPos = UVtoWorldDepth(uv); 
+    int index = id.y * gridWidth + id.x;
+    _graphicsBufferPoints[index] = worldPos;
+    
+}
