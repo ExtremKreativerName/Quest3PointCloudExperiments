@@ -1,0 +1,40 @@
+#include "Assets/_MyFolder/_Code/DepthKit/DepthKit.hlsl"
+#include "Assets/_MyFolder/Examples/TextureSampleExample/Script/PointDataStruct.hlsl"//My hlsl to define pointData for this and the shader PositionDisplayColor 
+#pragma kernel ProvidePositions
+
+uint side;
+RWStructuredBuffer<PointData> _graphicsBufferPoints;
+Texture2D<float4> _colorTex;
+
+float3 UVtoWorldDepth(float2 UV) //left eye 
+{
+    float3 ndc = float3(UV, 1);
+    ndc.z = agDepthSample(ndc.xy, 0);
+	
+    return agDepthNDCtoWorld(ndc, 0);
+}
+
+// this just chooses uvs in a grid shape, replace with where on the texture you actually want to sample, edges can be imprecise
+[numthreads(8,8,1)] // choosing numthreads like this can help with grid logic because the ids are already a 2DArray
+void ProvidePositions (uint3 id : SV_DispatchThreadID)
+{
+    int gridWidth =side; // dispatch size * thread count per group
+
+    
+    
+    float2 uv = (float2(id.x, id.y) + 0.5) / float2(gridWidth, gridWidth);
+    // 0.5 is just an offset, lets say we wanted to sample each pixel,
+    // it'd be better to sample from the middle than the edges,
+    // it's not important in this case but if you replace gridWidth with actual texture size
+    
+    float3 worldPos = UVtoWorldDepth(uv);
+    // Compute texture coordinates in integer format
+    int2 texCoords = int2(uv * float2(320, 240)); // Texture size should be set from c#, this is inaccurate, something could be wrong or you need a different way to get the right uv
+    float4 color = _colorTex.Load( int3(texCoords,0));// reads the texture there is also .SampleLevel but idk how to make it work
+    int index = id.y * gridWidth + id.x;
+    
+    _graphicsBufferPoints[index].position = float4(worldPos,1);// it is important that .w is 1 or some calculations get strange,
+    //right now it would not change anything because I wrote the shader that uses the value in a way to to make sure the value is 1
+    _graphicsBufferPoints[index].color = color;
+    
+}

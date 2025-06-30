@@ -18,14 +18,13 @@ Shader "Custom/Points"
             #pragma multi_compile_instancing
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-            StructuredBuffer<float3> _graphicsBufferPoints;
+            StructuredBuffer<float4> _graphicsBufferPoints;
 
             float4 vert(uint id : SV_VertexID): SV_POSITION
             {
-                float3 worldPos = _graphicsBufferPoints[id];
-                float4 world = float4(worldPos, 1.0);
+                float4 worldPos = _graphicsBufferPoints[id];
                 
-                return mul(UNITY_MATRIX_VP, world);
+                return mul(UNITY_MATRIX_VP, worldPos);
             }
 
 

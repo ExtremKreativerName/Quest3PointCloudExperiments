@@ -5,9 +5,27 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/_MyFolder/Scenes/TextureSampleExample.unity
+  - enabled: 0
+    path: Assets/_MyFolder/Examples/TextureSampleExample/TextureSampleExample.unity
     guid: c6b98b8f8c8084a42a9a35a2e67ddfc7
+  - enabled: 0
+    path: Assets/_MyFolder/Examples/PointRenderByVFX/PointRenderByVFX.unity
+    guid: 12153a5dd2d465840b5874f72d82778e
+  - enabled: 0
+    path: Assets/_MyFolder/Examples/VRPointsDepth/VRPointsDepth.unity
+    guid: 935bf4965a784cd4cbc4241ab7f12afe
+  - enabled: 0
+    path: Assets/_MyFolder/Examples/VRPointsDepth/VRNoPassThrough.unity
+    guid: 319558f0d61ef344792cb5efea39e7ce
+  - enabled: 0
+    path: Assets/PassthroughCameraApiSamples/CameraViewer/CameraViewer.unity
+    guid: ad5bb12b10679b840999aa322aa7a491
+  - enabled: 0
+    path: Assets/_MyFolder/Examples/WebTexDebug/WebTextureDebug.unity
+    guid: 544b7f031908fa947bc807edaf6792f5
+  - enabled: 1
+    path: Assets/_MyFolder/Examples/TextureSampleExample/TextureSampleExampleColor.unity
+    guid: 3f2808623dba58741846cb2b86c234ee
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 41edc70270a5780478019de660f9d88e, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
